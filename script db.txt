@@ -1,0 +1,36 @@
+CREATE DATABASE codaccesobeltran;
+
+-- Script para crear la tabla de alumnos
+CREATE TABLE alumnos (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(255) NOT NULL,
+    direccion VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    fecha_nacimiento DATE NOT NULL,
+    telefono VARCHAR(15) NOT NULL,
+    dni VARCHAR(8) NOT NULL,
+    fecha_ingreso DATE NOT NULL
+);
+
+-- Script para crear la tabla de códigos de acceso
+CREATE TABLE codigos (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    codigo_acceso VARCHAR(6) NOT NULL,
+    dni_alumno VARCHAR(8) NOT NULL,
+    fecha_expiracion DATE NOT NULL,
+    estado BOOLEAN NOT NULL
+);
+
+-- Agregar columna estado_expirado a la tabla codigos
+ALTER TABLE codigos
+ADD estado_expirado BOOLEAN NOT NULL DEFAULT 0;
+
+-- Agregar columna baja a la tabla codigos
+ALTER TABLE codigos
+ADD baja BOOLEAN NOT NULL DEFAULT 0;
+
+
+
+
+
+heg7BNAnP2M/

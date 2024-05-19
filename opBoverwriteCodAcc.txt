@@ -1,0 +1,39 @@
+<?php
+// Incluir el archivo de conexión a la base de datos
+include_once("includes/db.php");
+
+// Incluir el archivo codGen.php
+include_once("codGen.php");
+
+// Obtener la fecha actual
+$fecha_actual = date("Y-m-d");
+
+// Consulta SQL para seleccionar los códigos de acceso
+$sql_codigos = "SELECT * FROM codigos WHERE estado = TRUE";
+$resultado_codigos = mysqli_query($conn, $sql_codigos);
+
+// Recorrer los códigos de acceso
+while ($fila = mysqli_fetch_assoc($resultado_codigos)) {
+    // Obtener la fecha de expiración y el ID del código
+    $fecha_expiracion = $fila['fecha_expiracion'];
+    $id_codigo = $fila['id'];
+
+    // Calcular la diferencia de años entre la fecha actual y la fecha de expiración
+    $diff_anios = date_diff(date_create($fecha_actual), date_create($fecha_expiracion))->y;
+
+    // Si han pasado al menos 1 año, marcar el código como expirado y generar uno nuevo
+    if ($diff_anios >= 1) {
+        // Generar un nuevo código de acceso para el mismo DNI
+        $dni_alumno = $fila['dni_alumno'];
+        $nuevo_codigo = generarCodigoAcceso($dni_alumno);
+
+        // Actualizar el código existente en la base de datos con el nuevo código y la nueva fecha de expiración
+        $nueva_fecha_expiracion = date('Y-m-d', strtotime('+1 year')); // Nueva fecha de expiración
+        $sql_actualizar_nuevo_codigo = "UPDATE codigos SET codigo_acceso = '$nuevo_codigo', fecha_expiracion = '$nueva_fecha_expiracion' WHERE id = $id_codigo";
+        mysqli_query($conn, $sql_actualizar_nuevo_codigo);
+    }
+}
+
+// Cerrar la conexión a la base de datos
+mysqli_close($conn);
+?>

@@ -1,0 +1,12 @@
+Ejecuta 
+
+crontab -e 
+
+para editar el archivo cron jobs.
+
+0 23 28 2 * php /ruta/a/tu/script/actualizacion.php
+
+Esto ejecutará el script actualizacion.php a las 23hs del día 28 de febrero. 
+Los asteriscos en los campos * representan cualquier valor permitido, 
+por lo que la tarea se ejecutará independientemente del día de la semana.
+Guarda y cierra el archivo
